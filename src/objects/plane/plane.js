@@ -1,25 +1,24 @@
 import Renderable from '../renderable.js'
-import { vertices, indices, colors } from './cube-mesh.js'
+import { vertices, indices} from './plane-mesh.js'
 import Mesh from '../../graphics/mesh.js'
 import Transform from '../transform.js'
 
-class Cube extends Renderable {
+class Plane extends Renderable {
     constructor(gl, type = "Cube") {
         super(gl)
         this.type = type
         this.shadersPath = {
-            vertexShader: 'assets/shaders/cube/vertex.glsl',
-            fragmentShader: 'assets/shaders/cube/fragment.glsl'
+            vertexShader: 'assets/shaders/plane/vertex.glsl',
+            fragmentShader: 'assets/shaders/plane/fragment.glsl'
         }
 
         this.attributes = {
             aPosition: { size: 3, type: gl.FLOAT, normalized: false, stride: 0, offset: 0 },
-            aColor: { size: 3, type: gl.FLOAT, normalized: false, stride: 0, offset: 0 }
         }
 
         this.tranform = new Transform()
 
-        this.mesh = new Mesh(this.gl, vertices, indices, colors, this.attributes, this.uniforms)
+        this.mesh = new Mesh(this.gl, vertices, indices, [], this.attributes, this.uniforms, true)
     }
 
     setUniforms() {
@@ -31,9 +30,9 @@ class Cube extends Renderable {
             console.warn(`Uniforme uTime não encontrado no shader.`);
         }
         
+
         const uModelMatrixLocation = this.gl.getUniformLocation(this.shader.program, 'uModelMatrix');
         const uModelMatrix = this.tranform.getModelMatrix().clone()
-        
         if (uModelMatrixLocation !== -1) {
             this.gl.uniformMatrix4fv(uModelMatrixLocation, true, uModelMatrix.get().flat());
         } else {
@@ -61,4 +60,4 @@ class Cube extends Renderable {
     }
 }
 
-export default Cube
+export default Plane

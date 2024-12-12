@@ -9,18 +9,21 @@ class Vec3 {
         this.x += vec.x;
         this.y += vec.y;
         this.z += vec.z;
+        return this
     }
 
     subtract(vec) {
         this.x -= vec.x;
         this.y -= vec.y;
         this.z -= vec.z;
+        return this
     }
 
     multiply(scalar) {
         this.x *= scalar;
         this.y *= scalar;
         this.z *= scalar;
+        return this
     }
 
     divide(scalar) {
@@ -29,6 +32,7 @@ class Vec3 {
             this.y /= scalar;
             this.z /= scalar;
         }
+        return this
     }
 
     normalize() {
@@ -36,6 +40,7 @@ class Vec3 {
         if (length !== 0) {
             this.divide(length);
         }
+        return this
     }
 
     cross(vec) {

@@ -1,8 +1,13 @@
+import Camera from './camera.js'
+import Input from "./input.js";
+import CameraController from "../systems/camera-controller.js";
+
 export default class Engine {
     constructor(canvas) {
         this.canvas = canvas;
-        this.gl = canvas.getContext('webgl2'); // Tenta obter WebGL2 se disponível
+        this.gl = canvas.getContext('webgl2');
         
+        this.gl.clearColor(0.2, 0.2, 0.2, 1.0);
 
         if (!this.gl) {
             throw new Error('Falha ao inicializar o WebGL. Certifique-se de que o navegador suporta WebGL.');
@@ -13,6 +18,10 @@ export default class Engine {
         this.isRunning = false;
         this.scene = null;
 
+        this.camera = new Camera(); 
+        this.input = new Input()
+        this.cameraController = new CameraController(this.camera, this.input)
+
         this.resizeCanvas()
         window.addEventListener('resize', () => this.resizeCanvas())
     }
@@ -20,7 +29,7 @@ export default class Engine {
     setScene(scene) {
         if (scene && typeof scene.init === 'function') {
             this.scene = scene;
-            this.scene.init(this.gl);
+            this.scene.init(this.gl, this.camera);
         } else {
             console.error('Cena inválida ou sem método init.');
         }
@@ -43,7 +52,6 @@ export default class Engine {
         this.gl.clearDepth(1.0);        // Clear everything
         this.gl.enable(this.gl.DEPTH_TEST);  // Enable depth testing
         this.gl.depthFunc(this.gl.LEQUAL);   // Near things obscure far things
-
         this.gl.clear(this.gl.COLOR_BUFFER_BIT | this.gl.DEPTH_BUFFER_BIT);
 
         const currentTime = performance.now();
@@ -57,6 +65,15 @@ export default class Engine {
     }
 
     update(deltaTime) {
+        if (this.cameraController && typeof this.cameraController.update === 'function') {
+            this.cameraController.update(deltaTime);
+        }
+        if (this.input && typeof this.input.update === 'function') {
+            this.input.update(deltaTime);
+        }
+        if (this.camera && typeof this.camera.update === 'function') {
+            this.camera.update(deltaTime);
+        }
         if (this.scene && typeof this.scene.update === 'function') {
             this.scene.update(deltaTime);
         } else {

@@ -14,15 +14,13 @@ class Transform {
         // Aplique a escala primeiro
         mat4.scale(new Vec3(this.scale.x, this.scale.y, this.scale.z));
 
-        // Depois as rotações
+        mat4.translate(this.position);
+
         mat4.rotate({
             x: this.rotation.x,
             y: this.rotation.y,
             z: this.rotation.z,
         });
-
-        // Por último, a translação
-        mat4.translate(this.position);
 
         return mat4;
     }

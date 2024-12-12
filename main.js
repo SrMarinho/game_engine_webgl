@@ -7,7 +7,7 @@ function main() {
 
    const engine = new Engine(canvas)
 
-   var scene = new Scene1(engine.gl)
+   var scene = new Scene1(engine)
 
    engine.setScene(scene)
 
