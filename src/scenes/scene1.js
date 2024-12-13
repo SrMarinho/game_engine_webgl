@@ -4,9 +4,8 @@ import Plane from "../objects/plane/plane.js";
 
 class Scene1 extends Scene{
     init() {
-
-        var c = new Cube(this.gl, "Cube")
-        var p = new Plane(this.gl, "Plane")
+        var c = new Cube(this.engine, "Cube")
+        var p = new Plane(this.engine, "Plane")
         p.tranform.rotation.x = 90
         p.tranform.scale.x = 10
         p.tranform.scale.z = 10
@@ -14,9 +13,10 @@ class Scene1 extends Scene{
 
         this.add(c) 
         c.tranform.position.y = 1
-        c.tranform.scale.x = 0.5
-        c.tranform.scale.z = 0.5
-        c.tranform.scale.y = 0.5
+        c.tranform.rotation.y = -180
+        // c.tranform.scale.x = 0.5
+        // c.tranform.scale.z = 0.5
+        // c.tranform.scale.y = 0.5
         this.add(p) 
         // this.camera.position.y = 1
         this.tick = performance.now()

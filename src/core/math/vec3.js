@@ -61,6 +61,10 @@ class Vec3 {
     clone() {
         return new Vec3(this.x, this.y, this.z);
     }
+
+    toArray() {
+        return [this.x, this.y, this.z]
+    }
 }
 
 export default Vec3

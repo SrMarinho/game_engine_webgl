@@ -1,25 +1,26 @@
 import Renderable from '../renderable.js'
-import { vertices, indices, colors } from './cube-mesh.js'
+import { vertices, indices, normals, colors} from './cube-mesh.js'
 import Mesh from '../../graphics/mesh.js'
 import Transform from '../transform.js'
 
 class Cube extends Renderable {
-    constructor(gl, type = "Cube") {
-        super(gl)
+    constructor(engine, type = "Cube") {
+        super(engine)
+        
         this.type = type
         this.shadersPath = {
-            vertexShader: 'assets/shaders/cube/vertex.glsl',
-            fragmentShader: 'assets/shaders/cube/fragment.glsl'
+            vertexShader: 'assets/shaders/basic/vertex.glsl',
+            fragmentShader: 'assets/shaders/basic/fragment.glsl'
         }
 
         this.attributes = {
-            aPosition: { size: 3, type: gl.FLOAT, normalized: false, stride: 0, offset: 0 },
-            aColor: { size: 3, type: gl.FLOAT, normalized: false, stride: 0, offset: 0 }
+            aPosition: { size: 3, type: this.gl.FLOAT, normalized: false, stride: 0, offset: 0 },
+            aNormal: { size: 3, type: this.gl.FLOAT, normalized: false, stride: 0, offset: 0 },
         }
 
         this.tranform = new Transform()
 
-        this.mesh = new Mesh(this.gl, vertices, indices, colors, this.attributes, this.uniforms)
+        this.mesh = new Mesh(this.gl, vertices, indices, normals, colors, this.attributes, this.uniforms)
     }
 
     setUniforms() {
@@ -47,6 +48,17 @@ class Cube extends Renderable {
         } else {
             console.warn(`Uniforme uModelMatrix não encontrado no shader.`);
         }
+
+        if (this.engine.camera) {
+            const uCameraPositionLocation = this.gl.getUniformLocation(this.shader.program, 'uCamera.position');
+            
+            if (uCameraPositionLocation !== -1) {
+                this.gl.uniform3fv(uCameraPositionLocation, this.engine.camera.position.toArray());
+            } else {
+                console.warn(`Uniforme uProjectionMatrix não encontrado no shader.`);
+            }
+        }
+
 
         if (this.projectionMatrix) {
             const uProjectionMatrixLocation = this.gl.getUniformLocation(this.shader.program, 'uProjectionMatrix');

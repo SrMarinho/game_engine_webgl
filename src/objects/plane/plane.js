@@ -1,11 +1,11 @@
 import Renderable from '../renderable.js'
-import { vertices, indices} from './plane-mesh.js'
+import { vertices, indices } from './plane-mesh.js'
 import Mesh from '../../graphics/mesh.js'
 import Transform from '../transform.js'
 
 class Plane extends Renderable {
-    constructor(gl, type = "Cube") {
-        super(gl)
+    constructor(engine, type = "Plane") {
+        super(engine)
         this.type = type
         this.shadersPath = {
             vertexShader: 'assets/shaders/plane/vertex.glsl',
@@ -13,12 +13,12 @@ class Plane extends Renderable {
         }
 
         this.attributes = {
-            aPosition: { size: 3, type: gl.FLOAT, normalized: false, stride: 0, offset: 0 },
+            aPosition: { size: 3, type: this.gl.FLOAT, normalized: false, stride: 0, offset: 0 },
         }
 
         this.tranform = new Transform()
 
-        this.mesh = new Mesh(this.gl, vertices, indices, [], this.attributes, this.uniforms, true)
+        this.mesh = new Mesh(this.gl, vertices,  indices, null, [], this.attributes, this.uniforms, true)
     }
 
     setUniforms() {

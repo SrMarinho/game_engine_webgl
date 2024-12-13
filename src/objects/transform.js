@@ -11,16 +11,17 @@ class Transform {
     getModelMatrix() {
         const mat4 = new Mat4();
 
-        // Aplique a escala primeiro
-        mat4.scale(new Vec3(this.scale.x, this.scale.y, this.scale.z));
-
-        mat4.translate(this.position);
 
         mat4.rotate({
             x: this.rotation.x,
             y: this.rotation.y,
             z: this.rotation.z,
         });
+
+        mat4.scale(new Vec3(this.scale.x, this.scale.y, this.scale.z));
+
+        mat4.translate(this.position);
+
 
         return mat4;
     }

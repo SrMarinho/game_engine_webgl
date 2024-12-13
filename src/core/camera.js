@@ -9,8 +9,8 @@ class Camera {
         this.top = top || 10;        // Limite superior
         this.near = near || 0.1;    // Plano próximo
         this.far = far || 100;      // Plano distante
-        this.position = position || new Vec3(-10, 1, 0); // Posição da câmera
-        this.target = target || new Vec3(0, 1, 0);   // Para onde a câmera está olhando
+        this.position = position || new Vec3(5, 5, 5); // Posição da câmera
+        this.target = target || new Vec3(0, 0.5, 0);   // Para onde a câmera está olhando
         this.up = up || new Vec3(0, 1, 0);            // Vetor "cima"
 
 
