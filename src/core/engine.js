@@ -7,11 +7,14 @@ export default class Engine {
         this.canvas = canvas;
         this.gl = canvas.getContext('webgl2');
         
-        this.gl.clearColor(0.2, 0.2, 0.2, 1.0);
-
         if (!this.gl) {
             throw new Error('Falha ao inicializar o WebGL. Certifique-se de que o navegador suporta WebGL.');
         }
+
+        this.gl.clearColor(0.2, 0.2, 0.2, 1.0);
+        this.gl.enable(this.gl.BLEND);
+        this.gl.blendFunc(this.gl.SRC_ALPHA, this.gl.ONE_MINUS_SRC_ALPHA);
+
 
         this.lastTime = 0;
         this.deltaTime = 0;
@@ -90,11 +93,17 @@ export default class Engine {
     }
 
     resizeCanvas() {
-        this.canvas.width = window.innerWidth;
-        this.canvas.height = window.innerHeight;
+        const devicePixelRatio = window.devicePixelRatio || 1;
+
+        // Ajusta o tamanho do canvas para a resolução do dispositivo
+        this.canvas.width = window.innerWidth * devicePixelRatio;
+        this.canvas.height = window.innerWidth * devicePixelRatio;
+
+        // Atualiza o tamanho visual do canvas no CSS para manter o tamanho correto
+        this.canvas.style.width = `${window.innerWidth}px`;
+        this.canvas.style.height = `${window.innerWidth}px`;
 
         // Atualiza o viewport do WebGL
         this.gl.viewport(0, 0, this.canvas.width, this.canvas.height);
     }
-
 }

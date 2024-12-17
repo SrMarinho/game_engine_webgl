@@ -25,7 +25,7 @@ class Cube extends Renderable {
 
     setUniforms() {
         const uTimeLocation = this.gl.getUniformLocation(this.shader.program, 'uTime');
-        const uTime = performance.now()/ 1000
+        const uTime = performance.now() / 1000
         if (uTimeLocation !== -1) {
             this.gl.uniform1f(uTimeLocation, uTime);
         } else {

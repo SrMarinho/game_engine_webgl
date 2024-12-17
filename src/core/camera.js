@@ -9,24 +9,26 @@ class Camera {
         this.top = top || 10;        // Limite superior
         this.near = near || 0.1;    // Plano próximo
         this.far = far || 100;      // Plano distante
-        this.position = position || new Vec3(5, 5, 5); // Posição da câmera
-        this.target = target || new Vec3(0, 0.5, 0);   // Para onde a câmera está olhando
+        this.position = position || new Vec3(2, 5, 2); // Posição da câmera
+        this.target = target || new Vec3(0, 1, 0);   // Para onde a câmera está olhando
         this.up = up || new Vec3(0, 1, 0);            // Vetor "cima"
 
 
         this.fov = 90
         this.aspect = 1.0
 
-        this.transition = 1
+        this.transition = 0
 
         this.viewMatrix = this.calculateViewMatrix();
-        this.projectionMatrix = this.calculateHybridProjectionMatrix();
+        this.projectionMatrix = this.calculatePerspectiveProjectionMatrix();
     }
 
     update() {
+        this.adjustOrthogonalBounds();
         this.viewMatrix = this.calculateViewMatrix();
-        this.projectionMatrix = this.calculateHybridProjectionMatrix();
+        this.projectionMatrix = this.calculatePerspectiveProjectionMatrix();
     }
+
 
     calculateViewMatrix() {
         // Calcula o vetor direção (Z)
@@ -210,16 +212,42 @@ class Camera {
     }
 
     zoom(distance) {
-        // Calcula a direção de visão
-        let direction = this.target.clone().subtract(this.position).normalize();
+        if (this.transition === 0) { // Projeção ortogonal
+            const zoomFactor = 1 - distance; // Reduz os limites proporcionalmente
+            const minZoom = 0.1; // Define o zoom mínimo para evitar inversões
+            const maxZoom = 10;  // Define o zoom máximo
+            
+            // Calcula os novos limites respeitando os limites de zoom
+            const newLeft = this.left * zoomFactor;
+            const newRight = this.right * zoomFactor;
+            const newBottom = this.bottom * zoomFactor;
+            const newTop = this.top * zoomFactor;
 
-        // Ajusta a posição da câmera na direção de visão
-        this.position.add(direction.multiply(distance));
+            // Garante que os limites não excedam os valores mínimos ou máximos
+            if (Math.abs(newRight - newLeft) > minZoom && Math.abs(newTop - newBottom) > minZoom) {
+                this.left = newLeft;
+                this.right = newRight;
+                this.bottom = newBottom;
+                this.top = newTop;
+            }
+        } else { // Projeção perspectiva
+            // Calcula a direção de visão
+            let direction = this.target.clone().subtract(this.position).normalize();
 
-        // Atualiza a matriz de visão
-        this.viewMatrix = this.calculateViewMatrix();
+            // Ajusta a posição da câmera na direção de visão
+            this.position.add(direction.multiply(distance));
+        }
     }
+    
+    adjustOrthogonalBounds() {
+        let distance = this.position.clone().magnitude();
 
+        const scaleFactor = distance * 1;
+        this.left = -scaleFactor;
+        this.right = scaleFactor;
+        this.bottom = -scaleFactor;
+        this.top = scaleFactor;
+    }
 }
 
 export default Camera;

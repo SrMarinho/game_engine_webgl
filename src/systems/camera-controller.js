@@ -33,6 +33,7 @@ class CameraController {
         if (this.input.isKeyPressed("arrowDown")) pitch -= this.rotationSpeed;
         if (this.input.isKeyPressed("q")) roll -= this.rotationSpeed;
         if (this.input.isKeyPressed("e")) roll += this.rotationSpeed;
+        if (this.input.isKeyPressed("+")) this.camera.zoom(0.1);
 
         // Aplica movimentação
         this.camera.move(deltaTime, forward * this.moveSpeed, right * this.moveSpeed, up * this.moveSpeed);
