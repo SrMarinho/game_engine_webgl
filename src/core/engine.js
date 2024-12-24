@@ -22,8 +22,8 @@ export default class Engine {
         this.scene = null;
 
         this.camera = new Camera(); 
-        this.input = new Input()
-        this.cameraController = new CameraController(this.camera, this.input)
+        this.input = new Input();
+        this.cameraController = new CameraController(this.camera, this.input);
 
         this.resizeCanvas()
         window.addEventListener('resize', () => this.resizeCanvas())
@@ -32,7 +32,7 @@ export default class Engine {
     setScene(scene) {
         if (scene && typeof scene.init === 'function') {
             this.scene = scene;
-            this.scene.init(this.gl, this.camera);
+            this.scene.init();
         } else {
             console.error('Cena inválida ou sem método init.');
         }
@@ -98,10 +98,6 @@ export default class Engine {
         // Ajusta o tamanho do canvas para a resolução do dispositivo
         this.canvas.width = window.innerWidth * devicePixelRatio;
         this.canvas.height = window.innerWidth * devicePixelRatio;
-
-        // Atualiza o tamanho visual do canvas no CSS para manter o tamanho correto
-        this.canvas.style.width = `${window.innerWidth}px`;
-        this.canvas.style.height = `${window.innerWidth}px`;
 
         // Atualiza o viewport do WebGL
         this.gl.viewport(0, 0, this.canvas.width, this.canvas.height);

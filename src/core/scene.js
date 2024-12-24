@@ -1,8 +1,9 @@
 import Renderer from "./renderer.js";
 
 export default class Scene {
-    constructor(engine) {
+    constructor(engine, name) {
         this.engine = engine
+        this.name = name
         this.gl = this.engine.gl
         this.objects = [];
         this.lights = [];

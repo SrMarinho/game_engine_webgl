@@ -42,7 +42,9 @@ class Scene1 extends Scene{
             obj.setViewMatrix(this.camera.viewMatrix)
             obj.setProjectionMatrix(this.camera.projectionMatrix)
             if (obj.type === "Cube") {
-                // obj.tranform.rotation.y -= 1
+                if (obj.tranform.position.y - 1 > 0) {
+                    obj.tranform.position.y -= 5 * deltaTime
+                }
             }
             // obj.tranform.rotation.y += 0.5
             // obj.tranform.rotation.z += 0.5

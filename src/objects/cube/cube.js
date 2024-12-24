@@ -21,6 +21,7 @@ class Cube extends Renderable {
         this.tranform = new Transform()
 
         this.mesh = new Mesh(this.gl, vertices, indices, normals, colors, this.attributes, this.uniforms)
+        this.accelleration = 5
     }
 
     setUniforms() {
@@ -70,6 +71,10 @@ class Cube extends Renderable {
                 console.warn(`Uniforme uProjectionMatrix não encontrado no shader.`);
             }
         }
+    }
+
+    jump() {
+        this.tranform.position.y -= 5 * deltaTime
     }
 }
 
