@@ -21,9 +21,8 @@ export default class Engine {
         this.isRunning = false;
         this.scene = null;
 
-        this.camera = new Camera(); 
         this.input = new Input();
-        this.cameraController = new CameraController(this.camera, this.input);
+        this.cameraController = new CameraController(null, this.input);
 
         this.resizeCanvas()
         window.addEventListener('resize', () => this.resizeCanvas())
@@ -97,9 +96,12 @@ export default class Engine {
 
         // Ajusta o tamanho do canvas para a resolução do dispositivo
         this.canvas.width = window.innerWidth * devicePixelRatio;
-        this.canvas.height = window.innerWidth * devicePixelRatio;
+        this.canvas.height = window.innerHeight * devicePixelRatio; // Corrigido para innerHeight
 
         // Atualiza o viewport do WebGL
         this.gl.viewport(0, 0, this.canvas.width, this.canvas.height);
+
+        const aspectRatio = this.canvas.width / this.canvas.height;
+        this.cameraController.setAspectRatio = aspectRatio;
     }
 }

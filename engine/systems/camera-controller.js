@@ -1,13 +1,24 @@
 class CameraController {
     constructor(camera, input) {
-        this.camera = camera;
-        this.input = input;
+        this.camera = camera | null;
+        this.input = input | null;
 
-        this.moveSpeed = 10.0; // Velocidade de movimento
+        this.moveSpeed = 15.0; // Velocidade de movimento
         this.rotationSpeed = 0.05; // Sensibilidade de rotação para teclas
     }
 
+    setCamera(camera) {
+        this.camera = camera
+        return this
+    }
+
+    setInput(input) {
+        this.input = input 
+        return this
+    }
+
     update(deltaTime) {
+        if (!this.camera) return
         // Movimentação com teclado
         let forward = 0;
         let right = 0;
@@ -40,7 +51,14 @@ class CameraController {
 
         // Aplica rotação
         this.camera.rotate(yaw, pitch, roll);
-        
+
+        this.camera.update(deltaTime)
+    }
+
+    setAspectRatio(aspectRatio) {
+        if (!this.camera) return
+        // Movimentação com teclado
+        this.camera.setAspectRatio(aspectRatio)
     }
 }
 

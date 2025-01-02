@@ -8,24 +8,24 @@ class Camera {
         this.bottom = bottom || -10; // Limite inferior
         this.top = top || 10;        // Limite superior
         this.near = near || 0.1;    // Plano próximo
-        this.far = far || 100;      // Plano distante
-        this.position = position || new Vec3(0, 3, -8); // Posição da câmera
-        this.target = target || new Vec3(0, 1, this.far);   // Para onde a câmera está olhando
+        this.far = far || 1000;      // Plano distante
+        this.position = position || new Vec3(3, 3, -3); // Posição da câmera
+        this.target = target || new Vec3(0, 1, 0);   // Para onde a câmera está olhando
         this.up = up || new Vec3(0, 1, 0);            // Vetor "cima"
 
         this.fov = 90
         this.aspect = 1.0
 
-        this.transition = 0
+        this.transition = 1
 
         this.viewMatrix = this.calculateViewMatrix();
-        this.projectionMatrix = this.calculatePerspectiveProjectionMatrix();
+        this.projectionMatrix = this.calculateHybridProjectionMatrix();
     }
 
     update() {
         this.adjustOrthogonalBounds();
         this.viewMatrix = this.calculateViewMatrix();
-        this.projectionMatrix = this.calculatePerspectiveProjectionMatrix();
+        this.projectionMatrix = this.calculateHybridProjectionMatrix();
     }
 
 
@@ -246,6 +246,11 @@ class Camera {
         this.right = scaleFactor;
         this.bottom = -scaleFactor;
         this.top = scaleFactor;
+    }
+
+    setAspectRatio(aspectRatio) {
+        this.camera.aspect = aspectRatio
+        return this
     }
 }
 
